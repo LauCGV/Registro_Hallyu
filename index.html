@@ -3,11 +3,13 @@
 
 <head>
     <link rel="stylesheet" href="css/registro.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>RegisterHallyu</title>
 </head>
 
 <body>
-    <form action="validar" method="post">
+    <form id="data_send">
         <div class="content">
             <main>
                 <div class="titulo">
@@ -37,8 +39,7 @@
                     <p class="inputs"><label>
                             <span id="label_edad">Edad:</span><br>
                             <select id="edad">
-                                <option value="edad"> select </option>
-                                <option value="1"> 1 </option>
+                                <option value="select"> select </option>
                             </select>
                         </label>
                     </p>
@@ -61,5 +62,16 @@
         </div>
     </form>
 </body>
+<script>
+    let selectEdad = document.getElementById('edad');
+
+    for (let i = 1; i <= 90; i++) {
+        let option = document.createElement('option');
+        option.value = i;
+        option.text = i;
+        selectEdad.appendChild(option);
+    }
+</script>
+<script src="js/main.js"></script>
 
 </html>
