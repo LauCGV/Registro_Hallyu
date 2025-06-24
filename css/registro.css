@@ -15,7 +15,7 @@ html {
 
 .content {
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
     padding: 30px;
 
     background-color: var(--container-color);
@@ -27,7 +27,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     height: 100%;
     width: 100%;
 
@@ -35,15 +35,15 @@ body {
 }
 
 body {
-    --background-color : #f7a6d8;
-    --container-color : #fafafa;
-    --container-high-color : #eeeef4;
-    --text-color : #111111;
-    --contrast-text-color : #FAFAFA;
-    --sub-text-color : #444444;
-    --accent-color : #ff77cd;
-    --warning-color : #d32f2f;
-    --shadow-color : #e2e2e2;
+    --background-color: #f7a6d8;
+    --container-color: #fafafa;
+    --container-high-color: #eeeef4;
+    --text-color: #111111;
+    --contrast-text-color: #FAFAFA;
+    --sub-text-color: #444444;
+    --accent-color: #ff77cd;
+    --warning-color: #d32f2f;
+    --shadow-color: #e2e2e2;
 }
 
 main {
@@ -53,16 +53,21 @@ main {
     align-items: center;
     flex-direction: column;
     gap: clamp(100px, 5vw, 60px);
+
+  /*  input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }*/
 }
 
-h1{
+h1 {
     color: rgb(136, 0, 255);
 }
 
 label {
-  font-weight: bold;
+    font-weight: bold;
 }
 
-.inputs{
+.inputs {
     color: rgb(136, 0, 255);
 }

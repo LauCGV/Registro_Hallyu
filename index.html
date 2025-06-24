@@ -61,6 +61,27 @@
             </main>
         </div>
     </form>
+    
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-database-compat.js"></script>
+
+    <!-- Inicializar Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA943Syj_Rzl_vEFpSNnYZB_atF9biZJFQ",
+            authDomain: "registro-hallyu.firebaseapp.com",
+            databaseURL: "https://registro-hallyu-default-rtdb.firebaseio.com",
+            projectId: "registro-hallyu",
+            storageBucket: "registro-hallyu.firebasestorage.app",
+            messagingSenderId: "145334585322",
+            appId: "1:145334585322:web:e131bce587676d1a491493",
+            measurementId: "G-KJKP425HE5"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+
     <script>
         let selectEdad = document.getElementById('edad');
 
