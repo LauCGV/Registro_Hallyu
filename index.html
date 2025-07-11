@@ -9,13 +9,13 @@
 </head>
 
 <body>
-    <form id="data_send">
-        <div class="content">
+    <div class="content">
+        <div class="encabezado">
+            <img src="logo_hallyuFest.png" alt="Logo Hallyu" class="logo-hallyu">
+            <button id="btn_lenguaje">🌐 Language</button>
+        </div>
+        <form id="data_send">
             <main>
-                <div class="encabezado">
-                    <img src="logo_hallyuFest.png" alt="Logo Hallyu" class="logo-hallyu">
-                    <button id="btn_lenguaje">🌐 Language</button>
-                </div>
                 <div class="titulo">
                     <h1><span id="bienvenida">¡Bienvenidx al Hallyu Festa!</span></h1>
                     <br>
@@ -74,8 +74,8 @@
                 </div>
 
             </main>
-        </div>
-    </form>
+        </form>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-database-compat.js"></script>
@@ -107,6 +107,7 @@
             selectEdad.appendChild(option);
         }
     </script>
+    
     <script src="js/main.js"></script>
 
 </body>
