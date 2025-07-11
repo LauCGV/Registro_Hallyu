@@ -2,28 +2,28 @@ let idiomaActual = 'es'; // o 'en'
 
 const mensajes = {
     es: {
-        nombre: "Debe ingresar un nombre",
-        apellido: "Debe ingresar un apellido",
-        identificacion: "Debe ingresar una identificación que contenga solo números (sin carácteres especiales)",
-        edad: "Debe seleccionar una edad",
-        correo: "Debe ingresar un correo que cuente con '@'",
-        celular: "Debe ingresar un número de celular que contenga solo números (sin carácteres especiales)",
-        procedencia: "Debe ingresar su lugar de procedencia",
-        exito: "Registro exitoso! Su número de registro es: ",
-        exito2: ". Por favor, realice una captura de pantalla del número para posteriores sorteos",
-        error: "Se presentó un error en el sistema. Reinicie la página y vuelva a intentarlo. Disculpe las molestias."
+        ad_nombre: "Debe ingresar un nombre",
+        ad_apellido: "Debe ingresar un apellido",
+        ad_identificacion: "Debe ingresar una identificación que contenga solo números (sin carácteres especiales)",
+        ad_edad: "Debe seleccionar una edad",
+        ad_correo: "Debe ingresar un correo que cuente con '@'",
+        ad_celular: "Debe ingresar un número de celular que contenga solo números (sin carácteres especiales)",
+        ad_procedencia: "Debe ingresar su lugar de procedencia",
+        ad_exito: "Registro exitoso! Su número de registro es: ",
+        ad_exito2: ". Por favor, realice una captura de pantalla del número para posteriores sorteos",
+        ad_error: "Se presentó un error en el sistema. Reinicie la página y vuelva a intentarlo. Disculpe las molestias."
     },
     en: {
-        nombre: "You must enter a name",
-        apellido: "You must enter a last name",
-        identificacion: "You must enter a valid ID with only numbers (no special characters)",
-        edad: "You must select an age",
-        correo: "You must enter an email containing '@'",
-        celular: "You must enter a phone number with only digits (no special characters)",
-        procedencia: "You must enter your place of origin",
-        exito: "Registration successful! Your registration number is: ",
-        exito2: ". Please take a screenshot of the number for future drawings",
-        error: "An error occurred. Please reload the page and try again. Sorry for the inconvenience."
+        ad_nombre: "You must enter a name",
+        ad_apellido: "You must enter a last name",
+        ad_identificacion: "You must enter a valid ID with only numbers (no special characters)",
+        ad_edad: "You must select an age",
+        ad_correo: "You must enter an email containing '@'",
+        ad_celular: "You must enter a phone number with only digits (no special characters)",
+        ad_procedencia: "You must enter your place of origin",
+        ad_exito: "Registration successful! Your registration number is: ",
+        ad_exito2: ". Please take a screenshot of the number for future drawings",
+        ad_error: "An error occurred. Please reload the page and try again. Sorry for the inconvenience."
     }
 };
 
@@ -61,43 +61,43 @@ function validar(name, lastname, age, identification, email, cellphone, city) {
 
     if (name.trim().length <= 0) {
         document.getElementById('nombre').value = '';
-        alert(mensajes[idiomaActual].nombre);
+        alert(mensajes[idiomaActual].ad_nombre);
         return false;
     }
 
     if (lastname.trim().length <= 0) {
-        alert(mensajes[idiomaActual].apellido);
+        alert(mensajes[idiomaActual].ad_apellido);
         document.getElementById('apellido').value = '';
         return false;
     }
 
     if (isNaN(parseInt(identification))) {
-        alert(mensajes[idiomaActual].identificacion);
+        alert(mensajes[idiomaActual].ad_identificacion);
         document.getElementById('identificacion').value = '';
         return false;
     }
 
     if (age == "select") {
-       alert(mensajes[idiomaActual].edad);
+       alert(mensajes[idiomaActual].ad_edad);
         document.getElementById('edad').option = "select";
         return false;
     }
 
     if (!email.includes('@') || email.trim().length <= 1) {
-        alert(mensajes[idiomaActual].correo);
+        alert(mensajes[idiomaActual].ad_correo);
         document.getElementById('correo').value = '';
         return false;
     }
 
     if (isNaN(parseInt(cellphone))) {
-        alert(mensajes[idiomaActual].celular);
+        alert(mensajes[idiomaActual].ad_celular);
         document.getElementById('celular').value = '';
         return false;
     }
 
     if (city.trim().length <= 0) {
         document.getElementById('procedencia').value = '';
-        alert(mensajes[idiomaActual].procedencia);
+        alert(mensajes[idiomaActual].ad_procedencia);
         return false;
     }
 
@@ -136,7 +136,7 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                     database.ref('contadorDeUsuarios').set(numeroRegistro);
                 })
                 .then(() => {
-                    alert(mensajes[idiomaActual].exito+ numeroRegistro+exito2);
+                    alert(mensajes[idiomaActual].ad_exito+ numeroRegistro+mensajes[idiomaActual].ad_exito2);
 
                     // Limpiar los campos del formulario después de registrar
                     document.getElementById('nombre').value = '';
@@ -148,7 +148,7 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                     document.getElementById('procedencia').value = '';
                 })
                 .catch((error) => {
-                    alert.log(mensajes[idiomaActual].error);
+                    alert(mensajes[idiomaActual].ad_error);
                 });
 
         }
