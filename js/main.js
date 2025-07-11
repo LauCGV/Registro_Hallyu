@@ -1,4 +1,4 @@
-let idiomaActual = 'es'; // o 'en'
+let lenguajeActual = 'es'; // o 'en'
 
 const mensajes = {
     es: {
@@ -28,8 +28,8 @@ const mensajes = {
 };
 
 document.getElementById("btn_lenguaje").addEventListener("click", function () {
-    idiomaActual = idiomaActual === 'es' ? 'en' : 'es';
-    console.log("Idioma cambiado a:", idiomaActual);
+    lenguajeActual = lenguajeActual === 'es' ? 'en' : 'es';
+    console.log("Idioma cambiado a:", lenguajeActual);
 });
 
 document.getElementById('data_send').addEventListener('submit', function (event) {
@@ -61,43 +61,43 @@ function validar(name, lastname, age, identification, email, cellphone, city) {
 
     if (name.trim().length <= 0) {
         document.getElementById('nombre').value = '';
-        alert(mensajes[idiomaActual].ad_nombre);
+        alert(mensajes[lenguajeActual].ad_nombre);
         return false;
     }
 
     if (lastname.trim().length <= 0) {
-        alert(mensajes[idiomaActual].ad_apellido);
+        alert(mensajes[lenguajeActual].ad_apellido);
         document.getElementById('apellido').value = '';
         return false;
     }
 
     if (isNaN(parseInt(identification))) {
-        alert(mensajes[idiomaActual].ad_identificacion);
+        alert(mensajes[lenguajeActual].ad_identificacion);
         document.getElementById('identificacion').value = '';
         return false;
     }
 
     if (age == "select") {
-       alert(mensajes[idiomaActual].ad_edad);
+       alert(mensajes[lenguajeActual].ad_edad);
         document.getElementById('edad').option = "select";
         return false;
     }
 
     if (!email.includes('@') || email.trim().length <= 1) {
-        alert(mensajes[idiomaActual].ad_correo);
+        alert(mensajes[lenguajeActual].ad_correo);
         document.getElementById('correo').value = '';
         return false;
     }
 
     if (isNaN(parseInt(cellphone))) {
-        alert(mensajes[idiomaActual].ad_celular);
+        alert(mensajes[lenguajeActual].ad_celular);
         document.getElementById('celular').value = '';
         return false;
     }
 
     if (city.trim().length <= 0) {
         document.getElementById('procedencia').value = '';
-        alert(mensajes[idiomaActual].ad_procedencia);
+        alert(mensajes[lenguajeActual].ad_procedencia);
         return false;
     }
 
@@ -136,7 +136,7 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                     database.ref('contadorDeUsuarios').set(numeroRegistro);
                 })
                 .then(() => {
-                    alert(mensajes[idiomaActual].ad_exito+ numeroRegistro+mensajes[idiomaActual].ad_exito2);
+                    alert(mensajes[lenguajeActual].ad_exito+ numeroRegistro+mensajes[lenguajeActual].ad_exito2);
 
                     // Limpiar los campos del formulario después de registrar
                     document.getElementById('nombre').value = '';
@@ -148,7 +148,7 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                     document.getElementById('procedencia').value = '';
                 })
                 .catch((error) => {
-                    alert(mensajes[idiomaActual].ad_error);
+                    alert(mensajes[lenguajeActual].ad_error);
                 });
 
         }
