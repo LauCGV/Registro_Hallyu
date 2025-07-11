@@ -12,13 +12,23 @@
     <form id="data_send">
         <div class="content">
             <main>
+                <div class="encabezado">
+                    <img src="logo_hallyuFest.png" alt="Logo Hallyu" class="logo-hallyu">
+                    <button id="btn_lenguaje">🌐 Language</button>
+                </div>
                 <div class="titulo">
-                    <h1>Bienvenid@ a Hallyu</h1>
+                    <h1><span id="bienvenida">¡Bienvenidx al Hallyu Festa!</span></h1>
                     <br>
-                    <p>
-                        Para Hallyu es importante...
+                    <p class="informacion">
+                        Regístrate aquí para acceder al evento, participar en nuestras actividades especiales y entrar
+                        en los sorteos de experiencias únicas. ¡Gracias por ser parte de esta experiencia Hallyu! 💜
+                        <br>
+                        <br>
+                        Autorización para el tratamiento de datos personales
+                        Al diligenciar este formulario, autorizas el uso de tus datos personales para fines internos de
+                        control, registro y evaluación del Hallyu Festa, en cumplimiento de la Ley 1581 de
+                        2012 (Colombia).
                     </p>
-                    <br>
                 </div>
                 <div class="elements">
                     <p class="inputs"><label for="nombre:">
@@ -55,13 +65,18 @@
                             <input type="text" id="celular"></label></p>
                     <br>
                     <br>
-                    <button type="submit"> Enviar </button>
+                    <p class="inputs"><label for="procedencia">
+                            <span id="label_procedencia">Procedencia:</span><br>
+                            <input type="text" id="procedencia"></label></p>
+                    <br>
+                    <br>
+                    <button id="btn_enviar" type="submit"> Enviar </button>
                 </div>
 
             </main>
         </div>
     </form>
-    
+
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-database-compat.js"></script>
 
@@ -93,6 +108,7 @@
         }
     </script>
     <script src="js/main.js"></script>
+
 </body>
 
 
