@@ -1,3 +1,36 @@
+let idiomaActual = 'es'; // o 'en'
+
+const mensajes = {
+    es: {
+        nombre: "Debe ingresar un nombre",
+        apellido: "Debe ingresar un apellido",
+        identificacion: "Debe ingresar una identificación que contenga solo números (sin carácteres especiales)",
+        edad: "Debe seleccionar una edad",
+        correo: "Debe ingresar un correo que cuente con '@'",
+        celular: "Debe ingresar un número de celular que contenga solo números (sin carácteres especiales)",
+        procedencia: "Debe ingresar su lugar de procedencia",
+        exito: "Registro exitoso! Su número de registro es: ",
+        exito2: ". Por favor, realice una captura de pantalla del número para posteriores sorteos",
+        error: "Se presentó un error en el sistema. Reinicie la página y vuelva a intentarlo. Disculpe las molestias."
+    },
+    en: {
+        nombre: "You must enter a name",
+        apellido: "You must enter a last name",
+        identificacion: "You must enter a valid ID with only numbers (no special characters)",
+        edad: "You must select an age",
+        correo: "You must enter an email containing '@'",
+        celular: "You must enter a phone number with only digits (no special characters)",
+        procedencia: "You must enter your place of origin",
+        exito: "Registration successful! Your registration number is: ",
+        exito2: ". Please take a screenshot of the number for future drawings",
+        error: "An error occurred. Please reload the page and try again. Sorry for the inconvenience."
+    }
+};
+
+document.getElementById("btn_lenguaje").addEventListener("click", function () {
+    idiomaActual = idiomaActual === 'es' ? 'en' : 'es';
+    console.log("Idioma cambiado a:", idiomaActual);
+});
 
 document.getElementById('data_send').addEventListener('submit', function (event) {
     event.preventDefault(); // evita que se recargue la página
@@ -28,43 +61,43 @@ function validar(name, lastname, age, identification, email, cellphone, city) {
 
     if (name.trim().length <= 0) {
         document.getElementById('nombre').value = '';
-        alert("Debe ingresar un nombre");
+        alert(mensajes[idiomaActual].nombre);
         return false;
     }
 
     if (lastname.trim().length <= 0) {
-        alert("Debe ingresar un apellido");
+        alert(mensajes[idiomaActual].apellido);
         document.getElementById('apellido').value = '';
         return false;
     }
 
     if (isNaN(parseInt(identification))) {
-        alert("Debe ingresar una identificacion que contenga solo números (sin carácteres especiales)");
+        alert(mensajes[idiomaActual].identificacion);
         document.getElementById('identificacion').value = '';
         return false;
     }
 
     if (age == "select") {
-        alert("Debe seleccionar una edad");
+       alert(mensajes[idiomaActual].edad);
         document.getElementById('edad').option = "select";
         return false;
     }
 
     if (!email.includes('@') || email.trim().length <= 1) {
-        alert("Debe ingresar un correo que cuente con '@'");
+        alert(mensajes[idiomaActual].correo);
         document.getElementById('correo').value = '';
         return false;
     }
 
     if (isNaN(parseInt(cellphone))) {
-        alert("Debe ingresar un número de celular que contenga solo números (sin carácteres especiales)");
+        alert(mensajes[idiomaActual].celular);
         document.getElementById('celular').value = '';
         return false;
     }
 
     if (city.trim().length <= 0) {
         document.getElementById('procedencia').value = '';
-        alert("Debe ingresar el su lugar de procedencia");
+        alert(mensajes[idiomaActual].procedencia);
         return false;
     }
 
@@ -103,7 +136,7 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                     database.ref('contadorDeUsuarios').set(numeroRegistro);
                 })
                 .then(() => {
-                    alert('Registro exitoso! Su número de registro es: ' + numeroRegistro);
+                    alert(mensajes[idiomaActual].exito+ numeroRegistro+exito2);
 
                     // Limpiar los campos del formulario después de registrar
                     document.getElementById('nombre').value = '';
@@ -115,7 +148,7 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                     document.getElementById('procedencia').value = '';
                 })
                 .catch((error) => {
-                    alert.log("Se presentó un error en el sistema. Reinicie la página y vuelva a intentarlo. Disculpe las molestias", error);
+                    alert.log(mensajes[idiomaActual].error);
                 });
 
         }
