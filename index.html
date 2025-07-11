@@ -107,68 +107,7 @@
             selectEdad.appendChild(option);
         }
     </script>
-    <script>
-        const textos = {
-            es: {
-                bienvenida: "¡Bienvenidx al Hallyu Festa!",
-                parrafo: `Regístrate aquí para acceder al evento, participar en nuestras actividades especiales y entrar
-      en los sorteos de experiencias únicas. ¡Gracias por ser parte de esta experiencia Hallyu! 💜
-      <br><br>
-      Autorización para el tratamiento de datos personales:
-      Al diligenciar este formulario, autorizas el uso de tus datos personales para fines internos de
-      control, registro y evaluación del Hallyu Festa, en cumplimiento de la Ley 1581 de 2012 (Colombia).`,
-                nombre: "Nombre:",
-                apellido: "Apellido:",
-                identificacion: "Número de identificación:",
-                edad: "Edad:",
-                correo: "Correo:",
-                celular: "Celular:",
-                procedencia: "Procedencia:",
-                boton: "Enviar",
-                idiomaBtn: "🌐 English"
-            },
-            en: {
-                bienvenida: "Welcome to the Hallyu Festa!",
-                parrafo: `Register here to access the event, participate in our special activities, and enter
-      exclusive prize draws. Thank you for being part of this Hallyu experience! 💜
-      <br>
-      <br>
-      Authorization for the processing of personal data:
-      By completing this form, you authorize the use of your personal data for internal control,
-      registration, and evaluation of Hallyu Festa, in accordance with Colombian Law 1581 of 2012.`,
-                nombre: "First Name:",
-                apellido: "Last Name:",
-                identificacion: "ID Number:",
-                edad: "Age:",
-                correo: "Email:",
-                celular: "Phone Number:",
-                procedencia: "City",
-                boton: "Submit",
-                idiomaBtn: "🌐 Español"
-            }
-        };
-
-        let idiomaActual = "es";
-
-        document.getElementById("btn_lenguaje").addEventListener("click", () => {
-            idiomaActual = idiomaActual === "es" ? "en" : "es";
-            const t = textos[idiomaActual];
-
-            document.getElementById("bienvenida").innerHTML = t.bienvenida;
-            document.querySelector(".informacion").innerHTML = t.parrafo;
-            document.getElementById("label_name").innerText = t.nombre;
-            document.getElementById("label_apellido").innerText = t.apellido;
-            document.getElementById("label_id").innerText = t.identificacion;
-            document.getElementById("label_edad").innerText = t.edad;
-            document.getElementById("label_correo").innerText = t.correo;
-            document.getElementById("label_celular").innerText = t.celular;
-            document.getElementById("label_procedencia").innerText = t.procedencia;
-            document.querySelector('button[type="submit"]').innerText = t.boton;
-            document.getElementById("btn_lenguaje").innerText = t.idiomaBtn;
-        });
-
-    </script>
-
+    
     <script src="js/main.js"></script>
 
 </body>
