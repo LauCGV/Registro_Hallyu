@@ -45,6 +45,7 @@ function handleCell() {
     let correo = document.getElementById('correo').value;
     let celular = document.getElementById('celular').value;
     let procedencia = document.getElementById('procedencia').value;
+    let horaIngreso;
 
     // Para limpiar:   
     // document.getElementById('nombre').value = '';
@@ -52,9 +53,22 @@ function handleCell() {
     let result_val = validar(nombre, apellido, edad, identificacion, correo, celular, procedencia);
     console.log("el resultado es: " + result_val + " y su tipo es " + typeof result_val);
     if (result_val == true) {
-        agregar(nombre, apellido, edad, identificacion, correo, celular, procedencia);
+        horaIngreso = HoraIngreso();
+        agregar(nombre, apellido, edad, identificacion, correo, celular, procedencia, horaIngreso);
     }
 
+}
+
+function HoraIngreso(){
+    const ahora = new Date();
+
+    const hora = String(ahora.getHours()).padStart(2, '0');
+    const minuto = String(ahora.getMinutes()).padStart(2, '0');
+    const segundo = String(ahora.getSeconds()).padStart(2, '0');
+    console.log("hora: ");
+    console.log(`${hora}:${minuto}:${segundo}`);
+    const hour = `${hora}:${minuto}:${segundo}`;
+    return hour;
 }
 
 function validar(name, lastname, age, identification, email, cellphone, city) {
@@ -112,7 +126,7 @@ function validar(name, lastname, age, identification, email, cellphone, city) {
     return true;
 }
 
-function agregar(name, lastname, age, identification, email, cellphone, city) {
+function agregar(name, lastname, age, identification, email, cellphone, city, hour) {
     database.ref('contadorDeUsuarios').once('value')
         .then((snapshot) => {
             let contador = snapshot.val();
@@ -130,7 +144,8 @@ function agregar(name, lastname, age, identification, email, cellphone, city) {
                 identificacion: identification,
                 correo: email,
                 celular: cellphone,
-                procedencia: city
+                procedencia: city,
+                horaIngreso: hour
             })
                 .then(() => {
                     database.ref('contadorDeUsuarios').set(numeroRegistro);
