@@ -45,21 +45,26 @@ function handleCell() {
     let correo = document.getElementById('correo').value;
     let celular = document.getElementById('celular').value;
     let procedencia = document.getElementById('procedencia').value;
+    let acompanante = document.getElementById('acompanante').value;
+    let cantAcomp = document.getElementById('cantAcomp').value;
+    let conocimiento = document.getElementById('conocimiento').value;
+    let cultura = document.getElementById('cultura').value;
     let horaIngreso;
 
     // Para limpiar:   
     // document.getElementById('nombre').value = '';
 
-    let result_val = validar(nombre, apellido, edad, identificacion, correo, celular, procedencia);
+    let result_val = validar(nombre, apellido, edad, identificacion, correo, celular, procedencia, acompanante, cantAcomp, conocimiento, cultura);
     console.log("el resultado es: " + result_val + " y su tipo es " + typeof result_val);
     if (result_val == true) {
+        cantAcomp = numeroAcompanante(acompanante, cantAcomp);
         horaIngreso = HoraIngreso();
-        agregar(nombre, apellido, edad, identificacion, correo, celular, procedencia, horaIngreso);
+        agregar(nombre, apellido, edad, identificacion, correo, celular, procedencia, acompanante, cantAcomp, conocimiento, cultura, horaIngreso);
     }
 
 }
 
-function HoraIngreso(){
+function HoraIngreso() {
     const ahora = new Date();
 
     const hora = String(ahora.getHours()).padStart(2, '0');
@@ -71,7 +76,14 @@ function HoraIngreso(){
     return hour;
 }
 
-function validar(name, lastname, age, identification, email, cellphone, city) {
+function numeroAcompanante(accompany, cantAcomp) {
+    if (accompany == "no") {
+        cantAcomp = 0;
+    }
+    return cantAcomp;
+}
+
+function validar(name, lastname, age, identification, email, cellphone, city, accompany, numberAccomp, find, culture) {
 
     if (name.trim().length <= 0) {
         document.getElementById('nombre').value = '';
@@ -92,7 +104,7 @@ function validar(name, lastname, age, identification, email, cellphone, city) {
     }
 
     if (age == "select") {
-       alert(mensajes[lenguajeActual].ad_edad);
+        alert(mensajes[lenguajeActual].ad_edad);
         document.getElementById('edad').option = "select";
         return false;
     }
@@ -115,28 +127,35 @@ function validar(name, lastname, age, identification, email, cellphone, city) {
         return false;
     }
 
+
     console.log('Nombre:', name);
     console.log('Apellido:', lastname);
     console.log('Age:', age);
     console.log('Identificacion:', identification);
     console.log('Correo:', email);
     console.log('Celular:', cellphone);
-    console.log('Procedencia:', city)
+    console.log('Procedencia:', city);
+    console.log('Acompañante:', accompany);
+    console.log('Número de acompañantes:', numberAccomp);
+    console.log('Conocimiento:', find)
+
 
     return true;
 }
 
-function agregar(name, lastname, age, identification, email, cellphone, city, hour) {
-    database.ref('contadorDeUsuarios').once('value')
-        .then((snapshot) => {
-            let contador = snapshot.val();
+function agregar(name, lastname, age, identification, email, cellphone, city, accompany, numberAccomp, find, culture, hour) {
+    database.ref('contadorDeUsuarios').transaction((contador) => {
+        return (contador || 0) + 1;
+    })
+        .then((resultado) => {
 
-            if (contador === null) {
-                contador = 0; // Si no existe, empezamos en 0
+            if (!resultado.committed) {
+                throw new Error("No se pudo actualizar el contador.");
             }
 
-            const numeroRegistro = contador + 1;
-            database.ref('usuarios').push({
+            const numeroRegistro = resultado.snapshot.val();
+
+            return database.ref('usuarios').push({
                 numeroRegistro: numeroRegistro,
                 nombre: name,
                 apellido: lastname,
@@ -145,27 +164,72 @@ function agregar(name, lastname, age, identification, email, cellphone, city, ho
                 correo: email,
                 celular: cellphone,
                 procedencia: city,
+                acompanante: accompany,
+                cantAcomp: numberAccomp,
+                conocimiento: find,
+                cultura: culture,
                 horaIngreso: hour
             })
                 .then(() => {
-                    database.ref('contadorDeUsuarios').set(numeroRegistro);
-                })
-                .then(() => {
-                    alert(mensajes[lenguajeActual].ad_exito+ numeroRegistro+mensajes[lenguajeActual].ad_exito2);
 
-                    // Limpiar los campos del formulario después de registrar
-                    document.getElementById('nombre').value = '';
-                    document.getElementById('apellido').value = '';
-                    document.getElementById('edad').value = 'select';
-                    document.getElementById('identificacion').value = '';
-                    document.getElementById('correo').value = '';
-                    document.getElementById('celular').value = '';
-                    document.getElementById('procedencia').value = '';
-                })
-                .catch((error) => {
-                    alert(mensajes[lenguajeActual].ad_error);
-                });
+                    return fetch("https://script.google.com/macros/s/AKfycbx4odZKdQC7TzKiyw1aMllSRKalqDp9yhpWzCINpmjZP1Nv-I9uRmaeVTDVMdaUVbkR/exec", {
 
-        }
-        )
+                        method: "POST",
+
+                        mode: "no-cors",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            numeroRegistro: numeroRegistro,
+                            nombre: name,
+                            apellido: lastname,
+                            edad: age,
+                            identificacion: identification,
+                            correo: email,
+                            celular: cellphone,
+                            procedencia: city,
+                            acompanante: accompany,
+                            cantAcomp: numberAccomp,
+                            conocimiento: find,
+                            cultura: culture,
+                            horaIngreso: hour
+
+                        })
+
+                    });
+
+                })
+
+                .then(() => numeroRegistro);
+
+        })
+        .then((numeroRegistro) => {
+
+            alert(
+                mensajes[lenguajeActual].ad_exito +
+                numeroRegistro +
+                mensajes[lenguajeActual].ad_exito2
+            );
+
+            document.getElementById('nombre').value = '';
+            document.getElementById('apellido').value = '';
+            document.getElementById('edad').value = 'select';
+            document.getElementById('identificacion').value = '';
+            document.getElementById('correo').value = '';
+            document.getElementById('celular').value = '';
+            document.getElementById('procedencia').value = '';
+
+        })
+        .catch((error) => {
+
+            console.error(error);
+
+            alert(mensajes[lenguajeActual].ad_error);
+
+        });
+
 }
