@@ -70,6 +70,44 @@
                             <input type="text" id="procedencia"></label></p>
                     <br>
                     <br>
+                    <p class="inputs"><label for="acompanante">
+                            <span id="label_acompanante"> ¿Viene con acompañante?:</span><br>
+                            <select id="acompanante">
+                                <option value="no" id="opcion_si">No</option>
+                                <option value="si" id="opcion_no">Sí</option>
+                            </select>
+                        </label>
+                    </p>
+                    <br>
+                    <br>
+                    <div id="cantidadAcomp" style="display: none;">
+                        <p class="inputs">
+                            <label for="cantAcomp">
+                                <span id="label_cantAcomp">Cantidad de acompañantes:</span><br>
+                                <input type="text" id="cantAcomp">
+                            </label>
+                        </p>
+                        <br>
+                        <br>
+                    </div>
+                    <p class="inputs"><label>
+                            <span id="label_conocimiento">¿Cómo conoció sobre el evento?:</span><br>
+                            <select id="conocimiento">
+                                <option value="select"> select </option>
+                            </select>
+                        </label>
+                    </p>
+                    <br>
+                    <br>
+                    <p class="inputs"><label>
+                            <span id="label_cultura">¿Cuál es su interés en la cultura coreana?:</span><br>
+                            <select id="cultura">
+                                <option value="select"> select </option>
+                            </select>
+                        </label>
+                    </p>
+                    <br>
+                    <br>
                     <button id="btn_enviar" type="submit"> Enviar </button>
                 </div>
 
@@ -106,8 +144,11 @@
             option.text = i;
             selectEdad.appendChild(option);
         }
+
     </script>
+
     <script>
+    
         const textos = {
             es: {
                 bienvenida: "¡Bienvenidx al Hallyu Festa!",
@@ -124,6 +165,10 @@
                 correo: "Correo:",
                 celular: "Celular:",
                 procedencia: "Ciudad de procedencia:",
+                acompanante: "¿Viene con acompañante?",
+                cantAcomp: "Cantidad de acompañantes",
+                conocimiento: "¿Cómo conoció sobre el evento?",
+                cultura: "¿Qué le interesa más sobre la cultura coreana?",
                 boton: "Enviar",
                 idiomaBtn: "🌐 English"
             },
@@ -143,16 +188,45 @@
                 correo: "Email:",
                 celular: "Phone Number:",
                 procedencia: "City",
+                acompanante: "Did you come with someone?",
+                cantAcomp: "Number of accompanying persons",
+                conocimiento: "How did you find out about the event?",
+                cultura: "What interests you most about Korean culture?",
                 boton: "Submit",
                 idiomaBtn: "🌐 Español"
             }
         };
 
+        const opcionesConocimiento = {
+            es: [
+                { value: "select", text: "Seleccione una opción" },
+                { value: "hallyu", text: "Redes de Hallyu" },
+                { value: "embajada", text: "Redes de la Embajada" },
+                { value: "emprendimiento", text: "Emprendimientos" },
+                { value: "colombia", text: "Medios colombianos" },
+                { value: "amistad", text: "Conocido o amigo" },
+                { value: "correo", text: "Correo" }
+            ],
+            en: [
+                { value: "select", text: "Select an option" },
+                { value: "hallyu", text: "Hallyu Social Media" },
+                { value: "embajada", text: "Embassy Social Media" },
+                { value: "emprendimiento", text: "entrepreneurship" },
+                { value: "colombia", text: "Colombian Media" },
+                { value: "amistad", text: "Acquaintance or friend" },
+                { value: "correo", text: "Email" }
+            ]
+        };
+
+        cargarOpcionesConocimiento("es");
+
         let idiomaActual = "es";
+
 
         document.getElementById("btn_lenguaje").addEventListener("click", () => {
             idiomaActual = idiomaActual === "es" ? "en" : "es";
             const t = textos[idiomaActual];
+            cargarOpcionesConocimiento(idiomaActual)
 
             document.getElementById("bienvenida").innerHTML = t.bienvenida;
             document.querySelector(".informacion").innerHTML = t.parrafo;
@@ -163,9 +237,45 @@
             document.getElementById("label_correo").innerText = t.correo;
             document.getElementById("label_celular").innerText = t.celular;
             document.getElementById("label_procedencia").innerText = t.procedencia;
+            document.getElementById("label_acompanante").innerText = t.acompanante;
+            document.getElementById("label_cantAcomp").innerText = t.cantAcomp;
+            document.getElementById("label_conocimiento").innerText = t.conocimiento;
+            document.getElementById("label_cultura").innerText = t.cultura;
             document.querySelector('button[type="submit"]').innerText = t.boton;
             document.getElementById("btn_lenguaje").innerText = t.idiomaBtn;
         });
+
+        document.getElementById("acompanante").addEventListener("change", function () {
+
+            if (this.value === "si") {
+                document.getElementById("cantidadAcomp").style.display = "block";
+            } else {
+                document.getElementById("cantidadAcomp").style.display = "none";
+                document.getElementById("cantAcomp").value = "";
+            }
+
+        });
+
+        function cargarOpcionesConocimiento(idioma) {
+            const select = document.getElementById("conocimiento");
+
+            // Guardar la opción seleccionada
+            const valorSeleccionado = select.value;
+
+            // Vaciar el select
+            select.innerHTML = "";
+
+            // Agregar las opciones del idioma
+            opcionesConocimiento[idioma].forEach(opcion => {
+                const option = document.createElement("option");
+                option.value = opcion.value;
+                option.textContent = opcion.text;
+                select.appendChild(option);
+            });
+
+            // Intentar mantener la selección
+            select.value = valorSeleccionado;
+        }
 
     </script>
 
