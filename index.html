@@ -148,7 +148,7 @@
     </script>
 
     <script>
-    
+
         const textos = {
             es: {
                 bienvenida: "¡Bienvenidx al Hallyu Festa!",
@@ -199,7 +199,7 @@
 
         const opcionesConocimiento = {
             es: [
-                { value: "select", text: "Seleccione una opción" },
+                { value: "select", text: "select" },
                 { value: "hallyu", text: "Redes de Hallyu" },
                 { value: "embajada", text: "Redes de la Embajada" },
                 { value: "emprendimiento", text: "Emprendimientos" },
@@ -208,7 +208,7 @@
                 { value: "correo", text: "Correo" }
             ],
             en: [
-                { value: "select", text: "Select an option" },
+                { value: "select", text: "select" },
                 { value: "hallyu", text: "Hallyu Social Media" },
                 { value: "embajada", text: "Embassy Social Media" },
                 { value: "emprendimiento", text: "entrepreneurship" },
@@ -219,6 +219,7 @@
         };
 
         cargarOpcionesConocimiento("es");
+        cargarOpcionesAcompanante("es");
 
         let idiomaActual = "es";
 
@@ -227,6 +228,7 @@
             idiomaActual = idiomaActual === "es" ? "en" : "es";
             const t = textos[idiomaActual];
             cargarOpcionesConocimiento(idiomaActual)
+            cargarOpcionesAcompanante(idiomaActual);
 
             document.getElementById("bienvenida").innerHTML = t.bienvenida;
             document.querySelector(".informacion").innerHTML = t.parrafo;
@@ -255,6 +257,29 @@
             }
 
         });
+
+        function cargarOpcionesAcompanante(idioma) {
+            const select = document.getElementById("acompanante");
+            const valorSeleccionado = select.value;
+
+            select.innerHTML = "";
+            const option = document.createElement("option");
+            const option2 = document.createElement("option");
+            option.value = "no";
+            option2.value = "si";
+            if (idioma == "es") {
+                option.textContent = "No";
+                select.appendChild(option);
+                option2.textContent = "Sí";
+                select.appendChild(option2);
+            }else{
+                option.textContent = "No";
+                select.appendChild(option);
+                option2.textContent = "Yes";
+                select.appendChild(option2);
+            }
+
+        }
 
         function cargarOpcionesConocimiento(idioma) {
             const select = document.getElementById("conocimiento");
