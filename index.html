@@ -108,6 +108,22 @@
                     </p>
                     <br>
                     <br>
+                    <p class="inputs"><label>
+                            <span id="label_franja">¿?:</span><br>
+                            <select id="franja">
+                                <option value="select"> select </option>
+                            </select>
+                        </label>
+                    </p>
+                    <br>
+                    <br>
+                    <div>
+                    <p class="informacion"><span id="recomendacion"> Después de enviar la información, espere unos segundos para conocer su número de registro</span>
+                        
+                        <br>
+                        <br>
+                    </p>
+                    </div>
                     <button id="btn_enviar" type="submit"> Enviar </button>
                 </div>
 
@@ -118,7 +134,7 @@
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-database-compat.js"></script>
 
-    <!-- Inicializar Firebase -->
+    <!-- INICIALIZAR FIREBASE -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyA943Syj_Rzl_vEFpSNnYZB_atF9biZJFQ",
@@ -136,18 +152,8 @@
     </script>
 
     <script>
-        let selectEdad = document.getElementById('edad');
 
-        for (let i = 1; i <= 90; i++) {
-            let option = document.createElement('option');
-            option.value = i;
-            option.text = i;
-            selectEdad.appendChild(option);
-        }
-
-    </script>
-
-    <script>
+        //CONTENIDO DEL FORMULARIO EN ESPAÑOL Y EN INGLÉS
 
         const textos = {
             es: {
@@ -169,6 +175,8 @@
                 cantAcomp: "Cantidad de acompañantes",
                 conocimiento: "¿Cómo conoció sobre el evento?",
                 cultura: "¿Qué le interesa más sobre la cultura coreana?",
+                franja: "¿?",
+                recomendacion: "Después de enviar la información, espere unos segundos para conocer su número de registro",
                 boton: "Enviar",
                 idiomaBtn: "🌐 English"
             },
@@ -192,6 +200,8 @@
                 cantAcomp: "Number of accompanying persons",
                 conocimiento: "How did you find out about the event?",
                 cultura: "What interests you most about Korean culture?",
+                franja: "¿?",
+                recomendacion: "After submitting the information, please wait a few seconds to receive your registration number",
                 boton: "Submit",
                 idiomaBtn: "🌐 Español"
             }
@@ -218,17 +228,50 @@
             ]
         };
 
-        cargarOpcionesConocimiento("es");
-        cargarOpcionesAcompanante("es");
+        const opcionesCultura = {
+            es: [
+                { value: "select", text: "select" },
+                { value: "kmusic", text: "Kmusi" },
+                { value: "kfood", text: "Kfood" },
+                { value: "kbeauty", text: "Kbeauty" },
+                { value: "kdrama", text: "Kdrama" },
+                { value: "idioma", text: "El idioma" },
+                { value: "educacion", text: "La vida educativa" },
+                { value: "tecnologia", text: "La tecnología" },
+                { value: "turismo", text: "El turismo" },
+                { value: "cultura", text: "La cultura" }
+            ],
+            en: [
+                { value: "select", text: "select" },
+                { value: "kmusic", text: "Kmusi" },
+                { value: "kfood", text: "Kfood" },
+                { value: "kbeauty", text: "Kbeauty" },
+                { value: "kdrama", text: "Kdrama" },
+                { value: "idioma", text: "Language" },
+                { value: "educacion", text: "Educational life" },
+                { value: "tecnologia", text: "Technology" },
+                { value: "turismo", text: "Tourism" },
+                { value: "cultura", text: "Culture" }
+            ]
+        };
+
+        const opcionesFranja = [
+            { value: "select", text: "select" },
+            { value: "Franja1", text: "10:00 AM - 11:30 AM" },
+            { value: "Franja2", text: "11:30 AM - 01:00 PM" },
+            { value: "Franja3", text: "01:00 PM - 02:30 PM" },
+            { value: "Franja4", text: "02:30 PM - 04:00 PM" }
+        ];
 
         let idiomaActual = "es";
 
-
+        //CAMBIO DE IDIOMA
         document.getElementById("btn_lenguaje").addEventListener("click", () => {
             idiomaActual = idiomaActual === "es" ? "en" : "es";
             const t = textos[idiomaActual];
             cargarOpcionesConocimiento(idiomaActual)
             cargarOpcionesAcompanante(idiomaActual);
+            cargarOpcionesCultura(idiomaActual);
 
             document.getElementById("bienvenida").innerHTML = t.bienvenida;
             document.querySelector(".informacion").innerHTML = t.parrafo;
@@ -243,8 +286,10 @@
             document.getElementById("label_cantAcomp").innerText = t.cantAcomp;
             document.getElementById("label_conocimiento").innerText = t.conocimiento;
             document.getElementById("label_cultura").innerText = t.cultura;
+            document.getElementById("label_franja").innerText = t.franja;
             document.querySelector('button[type="submit"]').innerText = t.boton;
             document.getElementById("btn_lenguaje").innerText = t.idiomaBtn;
+            document.getElementById("recomendacion").innerText = t.recomendacion;
         });
 
         document.getElementById("acompanante").addEventListener("change", function () {
@@ -257,6 +302,25 @@
             }
 
         });
+
+        //CARGAR OPCIONES DE LAS PREGUNTAS SELECCIÓN MULTIPLE
+        cargarOpcionesEdad(idiomaActual);
+        cargarOpcionesConocimiento(idiomaActual);
+        cargarOpcionesAcompanante(idiomaActual);
+        cargarOpcionesCultura(idiomaActual);
+        cargarOpcionesFranja();
+
+
+        function cargarOpcionesEdad(idioma) {
+            let selectEdad = document.getElementById('edad');
+
+            for (let i = 1; i <= 90; i++) {
+                let option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                selectEdad.appendChild(option);
+            }
+        }
 
         function cargarOpcionesAcompanante(idioma) {
             const select = document.getElementById("acompanante");
@@ -272,7 +336,7 @@
                 select.appendChild(option);
                 option2.textContent = "Sí";
                 select.appendChild(option2);
-            }else{
+            } else {
                 option.textContent = "No";
                 select.appendChild(option);
                 option2.textContent = "Yes";
@@ -301,6 +365,49 @@
             // Intentar mantener la selección
             select.value = valorSeleccionado;
         }
+
+        function cargarOpcionesCultura(idioma) {
+            const select = document.getElementById("cultura");
+
+            // Guardar la opción seleccionada
+            const valorSeleccionado = select.value;
+
+            // Vaciar el select
+            select.innerHTML = "";
+
+            // Agregar las opciones del idioma
+            opcionesCultura[idioma].forEach(opcion => {
+                const option = document.createElement("option");
+                option.value = opcion.value;
+                option.textContent = opcion.text;
+                select.appendChild(option);
+            });
+
+            // Intentar mantener la selección
+            select.value = valorSeleccionado;
+        }
+
+        function cargarOpcionesFranja() {
+            const select = document.getElementById("franja");
+
+            // Guardar la opción seleccionada
+            const valorSeleccionado = select.value;
+
+            // Vaciar el select
+            select.innerHTML = "";
+
+            // Agregar las opciones del idioma
+            opcionesFranja.forEach(opcion => {
+                const option = document.createElement("option");
+                option.value = opcion.value;
+                option.textContent = opcion.text;
+                select.appendChild(option);
+            });
+
+            // Intentar mantener la selección
+            select.value = valorSeleccionado;
+        }
+
 
     </script>
 

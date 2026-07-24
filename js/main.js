@@ -1,5 +1,6 @@
 let lenguajeActual = 'es'; // o 'en'
 
+//AVISOS EN ESPAÑOL Y EN INGLÉS PARA LAS ACCIONES REALIZADAS POR EL USUARIO
 const mensajes = {
     es: {
         ad_nombre: "Debe ingresar un nombre",
@@ -13,6 +14,7 @@ const mensajes = {
         ad_cantAcomp: "Debe ingresar un número",
         ad_conocimiento: "Debe seleccionar cómo conoció el evento",
         ad_cultura: "Debe seleccionar un interés cultural",
+        ad_franja: "Debe seleccionar una franja de ingreso",
         ad_exito: "Registro exitoso! Su número de registro es: ",
         ad_exito2: ". Por favor, realice una captura de pantalla del número para posteriores sorteos",
         ad_error: "Se presentó un error en el sistema. Reinicie la página y vuelva a intentarlo. Disculpe las molestias."
@@ -29,23 +31,29 @@ const mensajes = {
         ad_cantAcomp: "You must enter a number",
         ad_conocimiento: "You must select how did you find out about the event",
         ad_cultura: "You must select an interests about Korean culture",
+        ad_franja: "Debe seleccionar una franja de ingreso",
         ad_exito: "Registration successful! Your registration number is: ",
         ad_exito2: ". Please take a screenshot of the number for future drawings",
         ad_error: "An error occurred. Please reload the page and try again. Sorry for the inconvenience."
     }
 };
 
+//BOTÓN DE CAMBIO DE IDIOMA
 document.getElementById("btn_lenguaje").addEventListener("click", function () {
     lenguajeActual = lenguajeActual === 'es' ? 'en' : 'es';
     console.log("Idioma cambiado a:", lenguajeActual);
 });
 
+//OBTENER LA INFORMACIÓN DEL FORMULARIO CUANDO SE HIZO EL ENVÍO Y REALIZAR ACCIÓN CORRESPONDUENTE
 document.getElementById('data_send').addEventListener('submit', function (event) {
     event.preventDefault(); // evita que se recargue la página
-    handleCell(); // aquí llamas tu función (debes tenerla definida también)
+    handleCell(); // 
 });
 
+//ACCIONES AL OBTENER LA INFORMACIÓN
 function handleCell() {
+
+    //DECLARAR CADA DATO Y OBTENER SU VALOR
     let nombre = document.getElementById('nombre').value;
     let apellido = document.getElementById('apellido').value;
     let edad = document.getElementById('edad').value;
@@ -57,72 +65,38 @@ function handleCell() {
     let cantAcomp = document.getElementById('cantAcomp').value;
     let conocimiento = document.getElementById('conocimiento').value;
     let cultura = document.getElementById('cultura').value;
+    let franja = document.getElementById('franja').value;
     let horaIngreso;
-    let franja;
+    let cantidadFranja;
 
     // Para limpiar:   
     // document.getElementById('nombre').value = '';
 
-    let result_val = validar(nombre, apellido, edad, identificacion, correo, celular, procedencia, acompanante, cantAcomp, conocimiento, cultura);
+    //LLAMAR LA VALIDACIÓN
+    let result_val = validar(nombre, apellido, edad, identificacion, correo, celular, procedencia, acompanante, cantAcomp, conocimiento, cultura, franja);
     console.log("el resultado es: " + result_val + " y su tipo es " + typeof result_val);
+
+    //AGREGAR AL USUARIO
     if (result_val == true) {
         cantAcomp = numeroAcompanante(acompanante, cantAcomp);
         horaIngreso = HoraIngreso();
-        const franja = obtenerFranja();
-
-        if (franja == null) {
-
-            alert("El registro no está habilitado en este horario.");
-
-            return;
-
-        }
-
-        validarFranja(franja)
-
-            .then(contador => {
-
-                if (contador >= 300) {
-
-                    if (franja.siguiente != null) {
-
-                        alert(
-                            "Esta franja ya alcanzó el máximo de 300 personas.\n\n" +
-                            "Podrás registrarte nuevamente a partir de las " +
-                            franja.siguiente
-                        );
-
-                    } else {
-
-                        alert(
-                            "La última franja del evento ya alcanzó su capacidad."
-                        );
-
-                    }
-
-                    return;
-
-                }
-
-                agregar(nombre,
-                    apellido,
-                    edad,
-                    identificacion,
-                    correo,
-                    celular,
-                    procedencia,
-                    acompanante,
-                    cantAcomp,
-                    conocimiento,
-                    cultura,
-                    horaIngreso,
-                    franja.nombre
-                );
-
-            });
-
+        agregar(nombre,
+            apellido,
+            edad,
+            identificacion,
+            correo,
+            celular,
+            procedencia,
+            acompanante,
+            cantAcomp,
+            conocimiento,
+            cultura,
+            franja,
+            horaIngreso
+        );
     }
 
+    //OBTENER HORA DE INGRESO
     function HoraIngreso() {
         const ahora = new Date();
 
@@ -135,6 +109,7 @@ function handleCell() {
         return hour;
     }
 
+    //OBTENER NÚMERO DE ACOMPAÑANTE Y ASIGNAR 0 CUANDO NO HAY ACOMPAÑANTE
     function numeroAcompanante(accompany, cantAcomp) {
         if (accompany == "no") {
             cantAcomp = 0;
@@ -142,7 +117,8 @@ function handleCell() {
         return cantAcomp;
     }
 
-    function validar(name, lastname, age, identification, email, cellphone, city, accompany, numberAccomp, find, culture) {
+    //VALIDAR LOS DATOS OBTENIDOS PARA MOSTRAR ADVERTENCIAS
+    function validar(name, lastname, age, identification, email, cellphone, city, accompany, numberAccomp, find, culture, slot) {
 
         if (name.trim().length <= 0) {
             document.getElementById('nombre').value = '';
@@ -198,6 +174,19 @@ function handleCell() {
             return false;
         }
 
+        if (culture == "select") {
+            alert(mensajes[lenguajeActual].ad_cultura);
+            document.getElementById('cultura').option = "select";
+            return false;
+        }
+
+        if (slot == "select") {
+            alert(mensajes[lenguajeActual].ad_franja);
+            document.getElementById('franja').option = "select";
+            return false;
+        }
+
+
         console.log('Nombre:', name);
         console.log('Apellido:', lastname);
         console.log('Age:', age);
@@ -207,88 +196,20 @@ function handleCell() {
         console.log('Procedencia:', city);
         console.log('Acompañante:', accompany);
         console.log('Número de acompañantes:', numberAccomp);
-        console.log('Conocimiento:', find)
-
+        console.log('Conocimiento:', find);
+        console.log('Cultura:', culture);
+        console.log('Franja:', slot);
 
         return true;
     }
 
-    function obtenerFranja() {
+    //AGREGAR LOS DATOS DEL USUARIO A FIREBASE Y EXCEL
+    function agregar(name, lastname, age, identification, email, cellphone, city, accompany, numberAccomp, find, culture, slot, hour) {
 
-        const ahora = new Date();
+        database.ref("contador" + slot).transaction((contadorFranja) => {
 
-        const minutos = ahora.getHours() * 60 + ahora.getMinutes();
-
-        if (minutos >= 600 && minutos < 690) {
-
-            return {
-                nombre: "franja1",
-                inicio: "10:00",
-                fin: "11:30",
-                siguiente: "11:31"
-            };
-
-        }
-
-        if (minutos >= 690 && minutos < 780) {
-
-            return {
-                nombre: "franja2",
-                inicio: "11:30",
-                fin: "13:00",
-                siguiente: "13:01"
-            };
-
-        }
-
-        if (minutos >= 780 && minutos < 930) {
-
-            return {
-                nombre: "franja3",
-                inicio: "13:00",
-                fin: "15:30",
-                siguiente: "15:31"
-            };
-
-        }
-
-        if (minutos >= 930 && minutos < 1020) {
-
-            return {
-                nombre: "franja4",
-                inicio: "15:30",
-                fin: "17:00",
-                siguiente: null
-            };
-
-        }
-
-        return null;
-
-    }
-
-    function validarFranja(datosFranja) {
-
-        return database
-            .ref("contadorHorarios/" + datosFranja.nombre)
-            .once("value")
-            .then(snapshot => {
-
-                return snapshot.val() || 0;
-
-            });
-
-    }
-
-
-    function agregar(name, lastname, age, identification, email, cellphone, city, accompany, numberAccomp, find, culture, hour, slot) {
-
-        database.ref("contadorHorarios/" + franja).transaction((contadorFranja) => {
-
-            contadorFranja = contadorFranja || 0;
-
-            if (contadorFranja >= 300) {
-                return; // Cancela la transacción
+            if (contadorFranja == null) {
+                contadorFranja = 0;
             }
 
             return contadorFranja + 1;
@@ -296,25 +217,27 @@ function handleCell() {
         })
             .then((resultadoFranja) => {
 
-                if (!resultadoFranja.committed) {
-                    throw new Error("La franja ya alcanzó su capacidad.");
-                }
-
+                const contadorFranja = resultadoFranja.snapshot.val();
                 return database.ref("contadorDeUsuarios").transaction((contadorGeneral) => {
 
-                    contadorGeneral = contadorGeneral || 0;
-                    return contadorGeneral + 1;
+                    if (contadorGeneral == null) {
+                        contadorGeneral = 0;
+                    }
 
+                    return contadorGeneral + 1;
+                }).then((resultadoGeneral) => {
+                    return { resultadoGeneral, contadorFranja };
                 });
+
             })
 
-            .then((resultadoGeneral) => {
+            .then(({resultadoGeneral, contadorFranja}) => {
 
                 if (!resultadoGeneral.committed) {
-                    throw new Error("No se pudo actualizar el contador general.");
+                    throw new Error("ERROR_CONTADOR");
                 }
 
-                const numeroRegistro = resultado.snapshot.val();
+                const numeroRegistro = resultadoGeneral.snapshot.val();
 
                 const nuevaKey = database.ref("usuarios").push().key;
 
@@ -331,12 +254,13 @@ function handleCell() {
                     cantAcomp: numberAccomp,
                     conocimiento: find,
                     cultura: culture,
-                    horaIngreso: hour,
-                    franja: slot
+                    franja: slot,
+                    cantidadFranja: contadorFranja,
+                    horaIngreso: hour
                 };
 
                 return database.ref().update({
-                    ["usuarios/" + nuevaKey]: datosUsuario
+                    ["usuarios/" + nuevaKey]: datosUsuarios
                 })
                     .then(() => {
                         return fetch("https://script.google.com/macros/s/AKfycbx4odZKdQC7TzKiyw1aMllSRKalqDp9yhpWzCINpmjZP1Nv-I9uRmaeVTDVMdaUVbkR/exec", {
@@ -368,6 +292,11 @@ function handleCell() {
                 document.getElementById('correo').value = '';
                 document.getElementById('celular').value = '';
                 document.getElementById('procedencia').value = '';
+                document.getElementById('acompanante').value = 'no';
+                document.getElementById('cantAcomp').value = 'select';
+                document.getElementById('conocimiento').value = 'select';
+                document.getElementById('cultura').value = 'select';
+                document.getElementById('franja').value = 'select';
 
             })
             .catch((error) => {
@@ -375,14 +304,6 @@ function handleCell() {
                 console.error(error);
 
                 switch (error.message) {
-
-                    case "FRANJA_LLENA":
-
-                        alert(
-                            "Lo sentimos. El cupo de esta franja ya fue completado."
-                        );
-
-                        break;
 
                     case "ERROR_CONTADOR":
 
